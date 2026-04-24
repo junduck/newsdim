@@ -42,8 +42,14 @@ ingest = [
     "polars>=1.40.1",
     "tqdm>=4.67.3",
 ]
+lora = [
+    "peft>=0.15.0",
+    "torch>=2.0",
+    "tqdm>=4.67.3",
+    "scikit-learn>=1.8.0",
+]
 all = [
-    "newsdim[server,scorer,train,ingest]",
+    "newsdim[server,scorer,train,ingest,lora]",
 ]
 
 [build-system]
