@@ -1,7 +1,23 @@
 [project]
 name = "newsdim"
-version = "0.9.0"
+version = "0.9.1"
+description = "轻量级中文财经新闻维度标注器 — BGE embedding + linear head"
+readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12"
+authors = [
+    { name = "junduck" },
+]
+keywords = ["nlp", "chinese", "financial-news", "embedding", "sentiment", "classification"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Text Processing :: Linguistic",
+]
 dependencies = [
     "numpy>=2.4.4",
     "sentence-transformers>=5.4.1",
@@ -43,10 +59,6 @@ dev = [
     "ruff>=0.5",
     "newsdim[all]",
 ]
-
-[tool.hatch.build.targets.wheel.force-include]
-"src/newsdim/assets" = "newsdim/assets"
-"src/newsdim/news_scorer/prompts" = "newsdim/news_scorer/prompts"
 
 [tool.ruff]
 line-length = 120

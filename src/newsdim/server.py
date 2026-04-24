@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 from newsdim import Tagger
 
-app = FastAPI(title="newsdim", version="0.9.0")
+app = FastAPI(title="newsdim", version="0.9.1")
 
 _tagger = Tagger()
 
