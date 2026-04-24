@@ -3,9 +3,9 @@ from __future__ import annotations
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from newsdim import DIMS, DimScores, Tagger
+from newsdim import Tagger
 
-app = FastAPI(title="newsdim", version="0.1.0")
+app = FastAPI(title="newsdim", version="0.9.0")
 
 _tagger = Tagger()
 
