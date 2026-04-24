@@ -8,6 +8,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+server = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.34.0",
+]
 scorer = [
     "openai>=2.32.0",
     "python-dotenv>=1.2.2",
@@ -23,7 +27,7 @@ ingest = [
     "tqdm>=4.67.3",
 ]
 all = [
-    "newsdim[scorer,train,ingest]",
+    "newsdim[server,scorer,train,ingest]",
 ]
 
 [build-system]

@@ -1,0 +1,5 @@
+services:
+  newsdim:
+    build: .
+    ports:
+      - "8427:8427"
