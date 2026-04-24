@@ -1,3 +1,3 @@
-from .trainer import LinearHead, train_analytical
+from .trainer import LinearHead, TrainResult, train_analytical
 
-__all__ = ["LinearHead", "train_analytical"]
+__all__ = ["LinearHead", "TrainResult", "train_analytical"]

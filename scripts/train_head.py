@@ -15,7 +15,8 @@ from pathlib import Path
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-from newsdim.train.trainer import DIMS, train_analytical
+from newsdim.dims import DIMS
+from newsdim.train.trainer import _compute_metrics, train_analytical
 
 DB = "local_data/data.db"
 MODELS_DIR = Path("models")
@@ -60,7 +61,7 @@ def main():
         test_size=args.val_size,
         random_state=args.seed,
     )
-    print(f"split:   {X_train.shape[0]} train, {X_val.shape[0]} val")
+    print(f"split:   {X_train.shape[0]} train, {X_val.shape[0]} val  (seed={args.seed})")
 
     result = train_analytical(X_train, y_train, ridge=args.ridge)
     print(f"condition number: {result.condition_number:.1f}")
@@ -70,8 +71,6 @@ def main():
 
     val_pred_raw = result.head.predict_raw(X_val)
     val_pred_clamped = result.head.predict(X_val)
-    from newsdim.train.trainer import _compute_metrics
-
     val_metrics = _compute_metrics(y_val, val_pred_raw, val_pred_clamped)
 
     print("\n=== Val metrics ===")

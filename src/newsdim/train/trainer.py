@@ -5,8 +5,7 @@ from pathlib import Path
 
 import numpy as np
 
-DIMS = ("mom", "stab", "horz", "eng", "hype", "sent", "sec", "pol")
-DIM_COUNT = len(DIMS)
+from newsdim.dims import DIMS
 
 
 @dataclass

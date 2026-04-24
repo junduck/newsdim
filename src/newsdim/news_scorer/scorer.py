@@ -1,16 +1,15 @@
 from __future__ import annotations
 
-import json
 import asyncio
-
+import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from openai import OpenAI, AsyncOpenAI
+from openai import AsyncOpenAI, OpenAI
 
-DIMS = ("mom", "stab", "horz", "eng", "hype", "sent", "sec", "pol")
+from newsdim.dims import DimScores
 
-PROMPTS_DIR = Path(__file__).resolve().parent.parent.parent.parent / "prompts"
+PROMPTS_DIR = Path(__file__).resolve().parent / "prompts"
 
 
 def _load_prompt(name: str) -> str:
@@ -52,25 +51,6 @@ class ScorerConfig:
             raise ValueError("LLM_MODEL not set (env or config)")
 
 
-@dataclass
-class DimScores:
-    mom: int = 0
-    stab: int = 0
-    horz: int = 0
-    eng: int = 0
-    hype: int = 0
-    sent: int = 0
-    sec: int = 0
-    pol: int = 0
-
-    def to_dict(self) -> dict[str, int]:
-        return {d: getattr(self, d) for d in DIMS}
-
-    @classmethod
-    def from_dict(cls, d: dict[str, int]) -> DimScores:
-        return cls(**{k: int(d[k]) for k in DIMS if k in d})
-
-
 class NewsScorer:
     def __init__(self, config: ScorerConfig | None = None):
         self.config = config or ScorerConfig()
@@ -100,6 +80,11 @@ class NewsScorer:
             kw["extra_body"] = {"thinking": {"type": "disabled"}}
         return kw
 
+    def _parse_response(self, raw: str) -> DimScores:
+        raw = raw.strip()
+        raw = raw.removeprefix("```json").removeprefix("```").removesuffix("```").strip()
+        return DimScores.from_dict(json.loads(raw))
+
     def score(self, text: str) -> DimScores:
         resp = self._client.chat.completions.create(
             **self._api_kwargs(),
@@ -108,11 +93,7 @@ class NewsScorer:
                 {"role": "user", "content": text},
             ],
         )
-        raw = resp.choices[0].message.content.strip()
-        raw = raw.removeprefix("```json").removeprefix("```").removesuffix("```").strip()
-        parsed = json.loads(raw)
-        scores = DimScores.from_dict(parsed)
-        return scores
+        return self._parse_response(resp.choices[0].message.content)
 
     def score_batch(self, texts: list[str], concurrency: int = 5) -> list[DimScores]:
         async_client = AsyncOpenAI(
@@ -132,9 +113,7 @@ class NewsScorer:
                         {"role": "user", "content": t},
                     ],
                 )
-                raw = resp.choices[0].message.content.strip()
-                raw = raw.removeprefix("```json").removeprefix("```").removesuffix("```").strip()
-                return DimScores.from_dict(json.loads(raw))
+                return self._parse_response(resp.choices[0].message.content)
 
         async def _run():
             try:
@@ -142,5 +121,4 @@ class NewsScorer:
             finally:
                 await async_client.close()
 
-        results = asyncio.run(_run())
-        return list(results)
+        return list(asyncio.run(_run()))

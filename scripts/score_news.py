@@ -13,7 +13,8 @@ from datetime import datetime, timezone
 
 from tqdm import tqdm
 
-from newsdim.news_scorer import DimScores, NewsScorer
+from newsdim.dims import DimScores
+from newsdim.news_scorer import NewsScorer
 
 DB = "local_data/data.db"
 

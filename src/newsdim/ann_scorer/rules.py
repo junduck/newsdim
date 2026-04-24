@@ -1,18 +1,6 @@
-"""Announcement scoring rules.
-
-Each rule maps an announcement to a dict of {dimension: score}.
-Dimensions: mom, stab, horz, eng, hype, sent, sec, pol.
-Score range: -3 to +3, integer. Missing dimensions default to 0.
-
-Strategy:
-  - 3 of 4 types are type-only (资产收购, 股份质押, 对外担保)
-  - 资产重组 needs content keywords (it's a grab-bag)
-  - 对外担保 differentiates by size feel: 亿 feels bigger than 万
-"""
-
 from __future__ import annotations
 
-DIMS = ("mom", "stab", "horz", "eng", "hype", "sent", "sec", "pol")
+from newsdim.dims import DIMS
 
 
 def _full(d: dict[str, int]) -> dict[str, int]:

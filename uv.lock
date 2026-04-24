@@ -722,38 +722,61 @@ name = "newsdim"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "matplotlib" },
     { name = "numpy" },
+    { name = "sentence-transformers" },
+]
+
+[package.optional-dependencies]
+all = [
+    { name = "matplotlib" },
     { name = "openai" },
     { name = "polars" },
     { name = "python-dotenv" },
     { name = "scikit-learn" },
     { name = "scipy" },
-    { name = "sentence-transformers" },
+    { name = "tqdm" },
+]
+ingest = [
+    { name = "polars" },
+    { name = "tqdm" },
+]
+scorer = [
+    { name = "openai" },
+    { name = "python-dotenv" },
+]
+train = [
+    { name = "matplotlib" },
+    { name = "scikit-learn" },
+    { name = "scipy" },
     { name = "tqdm" },
 ]
 
 [package.dev-dependencies]
 dev = [
+    { name = "newsdim", extra = ["all"] },
     { name = "pytest" },
     { name = "ruff" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "matplotlib", specifier = ">=3.10.9" },
+    { name = "matplotlib", marker = "extra == 'train'", specifier = ">=3.10.9" },
+    { name = "newsdim", extras = ["scorer", "train", "ingest"], marker = "extra == 'all'" },
     { name = "numpy", specifier = ">=2.4.4" },
-    { name = "openai", specifier = ">=2.32.0" },
-    { name = "polars", specifier = ">=1.40.1" },
-    { name = "python-dotenv", specifier = ">=1.2.2" },
-    { name = "scikit-learn", specifier = ">=1.8.0" },
-    { name = "scipy", specifier = ">=1.17.1" },
+    { name = "openai", marker = "extra == 'scorer'", specifier = ">=2.32.0" },
+    { name = "polars", marker = "extra == 'ingest'", specifier = ">=1.40.1" },
+    { name = "python-dotenv", marker = "extra == 'scorer'", specifier = ">=1.2.2" },
+    { name = "scikit-learn", marker = "extra == 'train'", specifier = ">=1.8.0" },
+    { name = "scipy", marker = "extra == 'train'", specifier = ">=1.17.1" },
     { name = "sentence-transformers", specifier = ">=5.4.1" },
-    { name = "tqdm", specifier = ">=4.67.3" },
+    { name = "tqdm", marker = "extra == 'ingest'", specifier = ">=4.67.3" },
+    { name = "tqdm", marker = "extra == 'train'", specifier = ">=4.67.3" },
 ]
+provides-extras = ["scorer", "train", "ingest", "all"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "newsdim", extras = ["all"] },
     { name = "pytest", specifier = ">=9.0.3" },
     { name = "ruff", specifier = ">=0.5" },
 ]
