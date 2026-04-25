@@ -5,10 +5,15 @@ description = "轻量级中文财经新闻维度标注器 — BGE embedding + li
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
-authors = [
-    { name = "junduck" },
+authors = [{ name = "junduck" }]
+keywords = [
+    "nlp",
+    "chinese",
+    "financial-news",
+    "embedding",
+    "sentiment",
+    "classification",
 ]
-keywords = ["nlp", "chinese", "financial-news", "embedding", "sentiment", "classification"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -21,30 +26,21 @@ classifiers = [
 dependencies = [
     "numpy>=2.4.4",
     "sentence-transformers>=5.4.1",
+    "jieba>=0.42.1",
+    "bm25s>=0.2",
 ]
 
 [project.optional-dependencies]
-server = [
-    "fastapi>=0.115.0",
-    "uvicorn>=0.34.0",
-]
-scorer = [
-    "openai>=2.32.0",
-    "python-dotenv>=1.2.2",
-]
+server = ["fastapi>=0.115.0", "uvicorn>=0.34.0"]
+scorer = ["openai>=2.32.0", "python-dotenv>=1.2.2"]
 train = [
     "matplotlib>=3.10.9",
     "scikit-learn>=1.8.0",
     "scipy>=1.17.1",
     "tqdm>=4.67.3",
 ]
-ingest = [
-    "polars>=1.40.1",
-    "tqdm>=4.67.3",
-]
-all = [
-    "newsdim[server,scorer,train,ingest]",
-]
+ingest = ["polars>=1.40.1", "tqdm>=4.67.3"]
+all = ["newsdim[server,scorer,train,ingest]"]
 
 [build-system]
 requires = ["hatchling"]
@@ -54,11 +50,8 @@ build-backend = "hatchling.build"
 packages = ["src/newsdim"]
 
 [dependency-groups]
-dev = [
-    "pytest>=9.0.3",
-    "ruff>=0.5",
-    "newsdim[all]",
-]
+build-dict = ["tushare>=1.4.29"]
+dev = ["pytest>=9.0.3", "ruff>=0.5", "newsdim[all]"]
 
 [tool.ruff]
 line-length = 120
