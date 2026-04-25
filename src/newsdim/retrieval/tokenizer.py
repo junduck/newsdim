@@ -28,10 +28,23 @@ def _ensure_jieba(user_dict: str | None = None) -> None:
 
 
 def tokenize(text: str, user_dict: str | None = None) -> list[str]:
+    """Tokenize Chinese text using jieba with bundled financial dictionary.
+
+    Loads the bundled finance dictionary (108K terms) on first call.
+    Optionally loads an additional user dictionary in jieba format.
+
+    Args:
+        text: Chinese text to tokenize.
+        user_dict: Path to a user dictionary file (jieba format, one word per line).
+
+    Returns:
+        List of tokens with length >= 2.
+    """
     _ensure_jieba(user_dict)
     return [t for t in jieba.cut(text) if len(t) >= 2]
 
 
 def tokenize_batch(texts: list[str], user_dict: str | None = None) -> list[list[str]]:
+    """Tokenize a batch of texts. See :func:`tokenize` for details."""
     _ensure_jieba(user_dict)
     return [[t for t in jieba.cut(text) if len(t) >= 2] for text in texts]

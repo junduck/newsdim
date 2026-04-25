@@ -980,7 +980,7 @@ train = [
 ]
 
 [package.dev-dependencies]
-bm25 = [
+build-dict = [
     { name = "tushare" },
 ]
 dev = [
@@ -1010,7 +1010,7 @@ requires-dist = [
 provides-extras = ["server", "scorer", "train", "ingest", "all"]
 
 [package.metadata.requires-dev]
-bm25 = [{ name = "tushare", specifier = ">=1.4.29" }]
+build-dict = [{ name = "tushare", specifier = ">=1.4.29" }]
 dev = [
     { name = "newsdim", extras = ["all"] },
     { name = "pytest", specifier = ">=9.0.3" },
